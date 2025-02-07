@@ -1,0 +1,37 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API ODS - Consumo Sustentável",
+        "description": "Documentação da API para incentivar ações sustentáveis.",
+        "version": "1.0.0"
+    },
+    "host": "127.0.0.1:5000",
+    "schemes": ["http"],
+    "paths": {
+        "/auth/register": {
+        "post": {
+            "summary": "Registrar usuário",
+            "description": "Cria um novo usuário na API.",
+            "parameters": [
+            {
+                "name": "body",
+                "in": "body",
+                "required": true,
+                "schema": {
+                "type": "object",
+                "properties": {
+                    "username": { "type": "string" },
+                    "password": { "type": "string" }
+                }
+                }
+            }
+            ],
+            "responses": {
+            "201": { "description": "Usuário registrado com sucesso" },
+            "400": { "description": "Erro ao registrar" }
+            }
+        }
+        }
+    }
+}
+  
