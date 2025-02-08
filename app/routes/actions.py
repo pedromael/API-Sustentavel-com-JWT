@@ -38,9 +38,13 @@ def create_action():
 def get_actions():
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM actions")
+    cursor.execute("""
+        SELECT actions.title, actions.description, actions.category, actions.points, actions.data, users.name 
+        FROM actions 
+        JOIN users ON actions.user_id = users.id
+    """)
     actions = cursor.fetchall()
 
-    actions_list = [{"title": action[1], "description": action[2], "category": action[3], "points": action[4]} for action in actions]
+    actions_list = [{"title": action[0], "description": action[1], "category": action[2], "points": action[3], "data": action[4], "user_name": action[5]} for action in actions]
 
     return jsonify(actions_list), 200
