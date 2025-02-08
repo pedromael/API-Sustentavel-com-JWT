@@ -39,12 +39,25 @@ def get_actions():
     db = get_db()
     cursor = db.cursor()
     cursor.execute("""
-        SELECT actions.title, actions.description, actions.category, actions.points, actions.data, users.name 
+        SELECT actions.title, actions.description, actions.category, actions.points, actions.data, users.name, users.id
         FROM actions 
         JOIN users ON actions.user_id = users.id
     """)
     actions = cursor.fetchall()
 
-    actions_list = [{"title": action[0], "description": action[1], "category": action[2], "points": action[3], "data": action[4], "user_name": action[5]} for action in actions]
+    actions_list = [{"title": action[0], "description": action[1], "category": action[2], "points": action[3], "data": action[4], "user_name": action[5], "id": action[6] } for action in actions]
 
     return jsonify(actions_list), 200
+
+@actions_bp.route('/<int:action_id>', methods=['DELETE'])
+#@jwt_required()
+def delete_action(action_id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM actions WHERE id = ?", (action_id,))
+    db.commit()
+
+    if cursor.rowcount == 0:
+        return jsonify({"message": "Ação não encontrada"}), 404
+
+    return jsonify({"message": "Ação eliminada com sucesso!"}), 200
