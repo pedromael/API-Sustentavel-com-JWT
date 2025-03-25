@@ -12,11 +12,10 @@ def apply_cors_headers(response):
     return response
 
 @actions_bp.route('/', methods=['POST'])
-#@jwt_required()
+@jwt_required()
 def create_action():
     data = request.get_json()
     
-    # Validação de dados
     if not data or not all(key in data for key in ('title', 'description', 'category', 'points', 'user_id')):
         return jsonify({"message": "Dados incompletos"}), 422
 
@@ -35,6 +34,7 @@ def create_action():
     return jsonify({"message": "Ação cadastrada com sucesso!"}), 201
 
 @actions_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_actions():
     db = get_db()
     cursor = db.cursor()
@@ -50,7 +50,7 @@ def get_actions():
     return jsonify(actions_list), 200
 
 @actions_bp.route('/<int:action_id>', methods=['DELETE'])
-#@jwt_required()
+@jwt_required()
 def delete_action(action_id):
     db = get_db()
     cursor = db.cursor()
