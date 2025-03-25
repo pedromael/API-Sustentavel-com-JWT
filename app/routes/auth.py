@@ -48,7 +48,7 @@ def login():
     user = cursor.fetchone()
 
     if user and check_password_hash(user[2], password):
-        access_token = create_access_token(identity=user[0])
+        access_token = create_access_token(identity=str(user[0]))
         return jsonify(access_token=access_token, user_id=user[0]), 200
     else:
         return jsonify({"message": "Credenciais inválidas"}), 401
